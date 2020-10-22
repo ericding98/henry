@@ -1,0 +1,12 @@
+{
+  "name": "henry",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ericding98/henry.git",
+  "author": "ericding98 <eric.ding.98@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nast -i wlp6s0 -d -f 'src 10.42.0.154' | grep -e 'http' | ./index.js",
+    "dump": "rm log.csv"
+  }
+}
