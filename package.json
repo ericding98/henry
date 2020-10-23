@@ -6,7 +6,16 @@
   "author": "ericding98 <eric.ding.98@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nast -i wlp6s0 -d -f 'src 10.42.0.154' | grep -e 'http' | ./index.js",
+    "start": "nast -di wlp6s0 -f 'src host 10.42.0.154 and dst host 10.42.0.1 and udp' | grep -e '    ' --line-buffered | './index.js'",
+    "report": "node scripts/report.js;yarn see",
+    "see": "firefox assets/report.html",
+    "mail": "node scripts/mail.js",
     "dump": "rm log.csv"
-  }
+  },
+  "dependencies": {
+    "got": "^11.8.0",
+    "juice": "^7.0.0",
+    "nodemailer": "^6.4.14"
+  },
+  "devDependencies": {}
 }

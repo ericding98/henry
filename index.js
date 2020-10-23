@@ -6,28 +6,22 @@ const {
   appendFile,
 } = require('fs');
 const {
-  reverse,
-} = require('dns');
-const {
-  promisify,
-} = require('util');
-const {
   createInterface,
 } = require('readline');
-const reverseAsync = promisify(reverse);
 const rl = createInterface({
-  input: process.stdin
+  input: process.stdin,
+  output: process.stdout
 });
 
-rl.on('line', async ip => {
-  try {
-    await formatAndWrite(ip.split(' -> ')[1].split(':')[0]);
-  } catch (error) {
-    // do nothing
-  }
+rl.on('line', line => {
+  console.log(line);
+  const domainStr = line.toString();
+  const domain = domainStr
+    .substring(10)
+    .trim()
+    .replace(/ +/g, '.')
+    .replace('\t', '.');
+  if (domain.length <= 3) return;
+  if (!domain.includes('.')) return;
+  appendFile('./log.csv', `${Date.now()},${domain}\n`, () => {});
 });
-
-const formatAndWrite = async ip => {
-  const domain = await reverseAsync(ip);
-  await appendFile('./log.csv', `${Date.now()},${ip},${domain}\n`, () => {});
-};
