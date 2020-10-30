@@ -1,4 +1,4 @@
-if (process.argv.length <= 2) throw new Error('Need emails.');
+if (process.argv.length <= 3) throw new Error('Need emails.');
 
 const {
   readFile,
@@ -11,10 +11,11 @@ const {
 } = require('nodemailer');
 const cwd = process.cwd();
 const readFileAsync = promisify(readFile);
+const args = process.argv;
 const mailOptions = {
   from: 'eric.ding.98@gmail.com',
-  to: process.argv.slice(2).join(','),
-  subject: 'Henry\'s daily browsing report'
+  to: args.slice(3).join(','),
+  subject: `Henry\'s daily browsing report - ${args[2]}`
 };
 const transporter = createTransport({
   service: 'gmail',

@@ -34,7 +34,7 @@ const generateBody = async logArr => {
       `)
       .join('')
     ));
-  writeFileAsync(`${cwd}/assets/report.html`, body, () => {});
+  await writeFileAsync(`${cwd}/assets/report.html`, body, () => {});
 };
 
 (async () => {
@@ -50,11 +50,12 @@ const generateBody = async logArr => {
       site: entry[1],
       icon: `http://${entry[1]}/favicon.ico`
     })})
-    .map(async entry => {return({
+    .map(async (entry, index, arr) => {return({
       ...entry,
       keep: await (async () => {
         try {
-          await got(entry.icon, { method: 'HEAD', timeout: 1000 });
+          await got(entry.icon, { method: 'HEAD', timeout: 10000 });
+          console.log('Completed', index, 'of', arr.length);
           return(true);
         } catch (error) {
           return(false);
@@ -62,6 +63,6 @@ const generateBody = async logArr => {
       })()
     })})
   )).filter(entry => entry.keep);
-  generateBody(logArr);
+  await generateBody(logArr);
   console.log('Report generated.');
 })();
